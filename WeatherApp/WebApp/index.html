@@ -1,0 +1,274 @@
+<!DOCTYPE html> <!-- type ! emment to auto generate framework-->
+<html lang="en">
+<head>
+    <!-- pad and tail : object lhs (latter) and rhs -->
+    <!--  typically used to specify character set, page description,
+         keywords, author of the document, and viewport settings-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="Safari">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        
+    /* class="abc" use .abc{} , can hv multiple element with same class */
+    /* id = "" use  #abc{}, id is unique */
+     
+    body {
+        background: #2C2C2D;
+    }
+
+
+
+    #title{   
+        text-align: center;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 21px; 
+        /* line-height: 41px; */
+
+        color: #FFFFFF;
+    }
+
+    #container{
+        width: 80%;
+        margin: 0 auto;
+        padding: 0 auto;
+    }
+
+    #currentTemp{
+        
+        background: #ff6250;
+        
+        /* top: 100px; */
+        /* min-width: 1em; */
+        padding: 0.5em;
+        border-radius: 10px;
+        
+        text-align: center;
+        font-family: 'Lucida Grande';
+        font-style: normal;
+        font-weight: 100;
+        font-size: 21px;
+        line-height: 21px;
+
+        color: #FFFFFF;
+    }
+
+    #infocontainer{
+        
+        
+        padding: 0px;
+        /* margin: 10px; */
+        align-self: center;
+        border: #FFFFFF;
+        /* border: 5px; */
+        
+    }
+    .info{
+        box-sizing: border-box;
+        display: flexbox;
+        color: black;
+        min-width: 45%;
+        /* max-width: 50%; */
+        /* padding: 0.5em; */
+        background: #A4DDDA;
+        text-align: center;
+        border-radius: 10px;
+    }
+
+    /* #temp_min{
+        font-size: 21px;
+    } */
+    #temp_max, #temp_min, #humidity, #pressure{
+        font-size: 21px;
+    }
+
+    
+   
+
+    </style>
+    
+    <title>Weather App</title>
+</head>
+<body onload="requestWeather()">
+
+    <script>
+        // text content
+        var tempDisplay;
+
+        var data ;
+        /*
+            {
+                "coord": {
+                    "lon": 114.1772,
+                    "lat": 22.3027
+                },
+                "weather": [
+                    {
+                        "id": 800,
+                        "main": "Clear",
+                        "description": "clear sky",
+                        "icon": "01d"
+                    }
+                ],
+                "base": "stations",
+                "main": {
+                    "temp": 301.02,
+                    "feels_like": 303.44,
+                    "temp_min": 300.5,
+                    "temp_max": 302.53,
+                    "pressure": 1013,
+                    "humidity": 69
+                },
+                "visibility": 10000,
+                "wind": {
+                    "speed": 4.02,
+                    "deg": 180,
+                    "gust": 5.81
+                },
+                "clouds": {
+                    "all": 10
+                },
+                "dt": 1651805777,
+                "sys": {
+                    "type": 2,
+                    "id": 47808,
+                    "country": "HK",
+                    "sunrise": 1651787300,
+                    "sunset": 1651834289
+                    // hk + 8 
+                },
+                "timezone": 28800,
+                "id": 1818501,
+                "name": "Tsimshatsui",
+                "cod": 200
+            }
+
+        */
+        // text content
+        function loadData(){
+            description = data.weather.description;
+            data.main.temp_max;
+            data.main.temp_min;
+            data.main.humidity;
+            document.getElementById('currentTemp').innerText =  'Current temperature ' + (data.main.temp-273.13).toFixed(2);
+            document.getElementById('temp_max').innerText =  'Highest ' + (data.main.temp_max-273.13).toFixed(2);
+            document.getElementById('temp_min').innerText =  'Minimum ' + (data.main.temp_min-273.13).toFixed(2);
+            document.getElementById('humidity').innerText =  'Humidity ' + (data.main.humidity).toFixed(2);
+            document.getElementById('pressure').innerText =  'Pressure ' + (data.main.pressure).toFixed(2);
+            // "temp": 301.02,
+            // "feels_like": 303.44,
+            // "temp_min": 300.5,
+            // "temp_max": 302.53,
+            // "pressure": 1013,
+            // "humidity": 69
+        }
+        function alerter(){
+            alert("Testing");
+        }
+
+        var Section = document.getElementById('Section1');
+
+        /*------cannot delete----*/
+        const header = document.querySelector('header');
+        const section = document.querySelector('section');
+        /*------cannot delete----*/
+
+        //
+        var weatherURL='https://api.openweathermap.org/data/2.5/weather?lat=22.302711&lon=114.177216&appid=33150faa352047b82ce5b7e35134758c';
+
+        //
+        function requestWeather(){
+            var api = weatherURL;
+            var apirequest = new XMLHttpRequest();
+            apirequest.open('GET', api);
+            apirequest.send();
+            apirequest.addEventListener('load', reqListener);
+        }
+
+        function reqListener () {
+            console.log(this.responseText);
+            data = JSON.parse(this.responseText);
+            console.log(data.main.temp-273.13);
+            ts = new Date(data.sys.sunrise);
+            console.log('Sunrise: ' + ts.toGMTString());
+            loadData();
+
+        }
+        
+    </script>
+     <!------------------- cannot delete ------------------>
+     <header></header>
+     <!------------------- cannot delete ------------------->
+
+
+    
+    <!-- <hr> -->
+    <div id="container">
+        <div >
+            <h1 id="title">Weather App</h1>
+        </div>
+        <div>
+            <h2 id="currentTemp">loading</h2>
+        </div>
+        <section id="infocontainer">
+            <p class="info" id="temp_max" >Highest</p> 
+            <p class="info" id="temp_min">Lowest</p> 
+            <p class="info" id="humidity">humidity</p> 
+            <p class="info" id="pressure">Pressure</p> 
+        </section>
+    </div>    
+    
+<!-- 
+    <p class="frames"
+    style="
+    position: absolute;
+    left: 20vw;
+    top: 30vw;
+    ">
+    
+    </p>
+
+    <p class="frames"
+    style="
+    position: absolute;
+    left: 20vw;
+    top: 60vw;
+    ">
+    </p>
+    
+    <p class="frames"
+    style="
+    position: absolute;
+    left: 50vw;
+    top: 30vw;
+    ">
+   
+    </p>
+
+
+
+    <p class="frames"
+    style="
+    position: absolute;
+    left: 50vw;
+    top: 60vw;
+    text-align:center;
+    ">
+    today's temp
+    </p>
+ -->
+    
+    <!-- <textarea name="test" class="txboxes" cols="30" rows="10"></textarea> -->
+<!--     
+    <p class = "txboxes" style="
+    position: absolute;
+    left: calc(50% - 140px/2 + 99px);
+    top: calc(50% - 140px/2 + 132px);   
+    ">
+    </p> -->
+
+    <!-- </button>
+    <h2 onclick="requestWeather();"><button>Refresh</button></h2> -->
+</body>
+</html>
